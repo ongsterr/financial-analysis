@@ -1,39 +1,55 @@
 const request = require('./init')
 
 const requests = (token = '') => {
+	if (token == '') {
+		new Error('No access token was provided.')
+	}
+
 	const post = async (url, body = {}) => {
-		const response = await request({
-			method: 'post',
-			url,
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-			data: { ...body },
-		})
-		return response.data
+		try {
+			const response = await request({
+				method: 'post',
+				url,
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				data: { ...body },
+			})
+			return response.data
+		} catch (err) {
+			console.error(err.response.data)
+		}
 	}
 
 	const get = async url => {
-		const response = await request({
-			method: 'get',
-			url,
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		})
-		return response.data
+		try {
+			const response = await request({
+				method: 'get',
+				url,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			return response.data
+		} catch (err) {
+			console.error(err.response.data)
+		}
 	}
 
 	const destroy = async url => {
-		const response = await request({
-			method: 'delete',
-			url,
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		})
-		return response
+		try {
+			const response = await request({
+				method: 'delete',
+				url,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			return response.status
+		} catch (err) {
+			console.error(err.response.data)
+		}
 	}
 
 	return {
@@ -43,4 +59,4 @@ const requests = (token = '') => {
 	}
 }
 
-module.exports = Object.assign({}, { requests })
+module.exports = requests

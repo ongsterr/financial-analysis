@@ -8,7 +8,7 @@ const Connections = {
 			`/users/${userId}/connections/${connectionId}/refresh`
 		),
 	refreshAll: async (token, userId) =>
-		await requests(token).post(`users/${userId}/connections/refresh`),
+		await requests(token).post(`/users/${userId}/connections/refresh`),
 	retrieve: async (token, userId, connectionId) =>
 		await requests(token).get(`/user/${userId}/connections/${connectionId}`),
 	update: async (token, userId, connectionId, data) =>
