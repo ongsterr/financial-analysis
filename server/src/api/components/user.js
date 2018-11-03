@@ -1,4 +1,4 @@
-const requests = require('./requests')
+const requests = require('../requests')
 
 const Users = {
 	create: async (token, data) => await requests(token).post('/users', data),

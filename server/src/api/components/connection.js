@@ -1,4 +1,4 @@
-const requests = require('./requests')
+const requests = require('../requests')
 
 const Connections = {
 	create: async (token, userId, data) =>

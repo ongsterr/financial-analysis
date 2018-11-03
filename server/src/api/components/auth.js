@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const request = require('./init')
+const request = require('../init')
 
 const Auth = {
 	getToken: async apiKey => {
