@@ -7,7 +7,7 @@ const Users = {
 	update: async (token, userId, data) =>
 		await requests(token).post(`/users/${userId}`, data),
 	delete: async (token, userId) =>
-		await requests(token).delete(`/users/${userId}`),
+		await requests(token).destroy(`/users/${userId}`),
 }
 
 module.exports = Object.assign({}, { Users })
