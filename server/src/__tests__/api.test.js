@@ -125,19 +125,6 @@ describe('Basiq API testing', () => {
 			done()
 		})
 
-		// it('should retrieve the job and show the connection id if job successful', async done => {
-		//  const response = await api.Jobs.retrieve(token, jobId)
-		// 	const stepOne = response.steps[0]
-		// 	connectionId = stepOne.result[0].url.split('/')[3]
-
-		// 	expect(setTimeout).toHaveBeenCalledTimes(1)
-		// 	expect(response.type).toBe('job')
-		// 	expect(stepOne.title).toBe('verify-credentials')
-		// 	expect(stepOne.status).toBe('success')
-		// 	expect(connectionId).toHaveLength(32)
-		// 	done()
-		// })
-
 		it('should retrieve connection', async () => {
 			const response = await api.Connections.retrieve(
 				token,
