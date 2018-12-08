@@ -1,4 +1,6 @@
-const repository = db => {
+const UserModel = require('../models/User')
+
+const userRepo = db => {
 	const User = db.model('User')
 	const updateOptions = { new: true, runValidators: true }
 
@@ -61,21 +63,14 @@ const repository = db => {
 
 	const disconnect = async () => await db.disconnect()
 
-	return Object.create({
+	return {
 		createUser,
 		retrieveUser,
 		updateUser,
 		deleteUser,
 		listAllUsers,
 		disconnect,
-	})
-}
-
-const connect = db => {
-	if (!db) {
-		new Error('DB is not connected.')
 	}
-	return repository(db)
 }
 
-module.exports = Object.assign({}, { connect })
+module.exports = Object.assign({}, { userRepo })

@@ -16,8 +16,6 @@ const UserSchema = new Schema({
 	},
 	email: {
 		type: String,
-		match:
-			'^([a-zA-Z0-9_-.]+)@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)|(([a-zA-Z0-9-]+.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$',
 		unique: true,
 		required: true,
 	},
@@ -27,6 +25,7 @@ const UserSchema = new Schema({
 	apiUserID: {
 		type: String,
 		unique: true,
+		default: '',
 	},
 	status: {
 		type: String,
@@ -35,19 +34,35 @@ const UserSchema = new Schema({
 	},
 })
 
-UserSchema.pre('save', async () => {
+UserSchema.pre('save', async function() {
 	const userData = {
 		email: this.email,
 		mobile: this.mobile,
 	}
-	const token = await api.Auth.getToken(apiConfig.key)
+	const auth = await api.Auth.getToken(apiConfig.key)
+	const token = auth.access_token
 	const response = await api.Users.create(token, userData)
-	const check = response.email == this.email && response.mobile == this.mobile
+	const check = response.email == this.email
 
 	if (check) {
 		this.apiUserID = response.id
 	} else {
-		new Error('User creation was not successful. Please try again.')
+		throw new Error('User creation was not successful. Please try again.')
+	}
+
+	if (this.apiUserID == '') {
+		throw new Error('User was not allocated api ID.')
+	}
+})
+
+UserSchema.pre('update', async function() {
+	const auth = await api.Auth.getToken(apiConfig.key)
+	const token = auth.access_token
+
+	if (this.status == 'inactive') {
+		const deleteResponse = await api.Users.delete(token, this.apiUserID)
+		if (deleteResponse != 204)
+			throw new Error('User removal was not successful')
 	}
 })
 
